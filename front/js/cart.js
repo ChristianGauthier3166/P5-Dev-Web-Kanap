@@ -3,7 +3,7 @@ const page = document.location.href;
 //----------------------------------------------------------------
 // Récupération des produits de l'api
 //----------------------------------------------------------------
-// appel de la ressource api product (voir script.js) si on est sur la page panier
+// On appelle la ressource api product (voir script.js) si on est sur la page panier
 if (page.match("cart")) {
 fetch("http://localhost:3000/api/products")
   .then((res) => res.json())
@@ -40,16 +40,16 @@ function affichagePanier(index) {
         }
       }
     }
-    // créait l'affichage si les conditions sont présentes
+    // on crée l'affichage si les conditions sont présentes
     affiche(panier);
   } else {
-    // si il n'y a pas de panier on créait un H1 informatif et quantité appropriées
+    // si il n'y a pas de panier on crée un H1 informatif et quantité appropriées
     document.querySelector("#totalQuantity").innerHTML = "0";
     document.querySelector("#totalPrice").innerHTML = "0";
     document.querySelector("h1").innerHTML =
       "Vous n'avez pas d'article dans votre panier";
   }
-  // reste à l'écoute grâce aux fonctions suivantes pour modifier l'affichage
+  // fonctions suivantes pour modifier l'affichage
   modifQuantité();
   suppression();
 }
@@ -59,7 +59,7 @@ function affichagePanier(index) {
 function affiche(indexé) {
   // on déclare et on pointe la zone d'affichage
   let zonePanier = document.querySelector("#cart__items");
-  // on créait les affichages des produits du panier via un map et introduction de dataset dans le code
+  // on crée les affichages des produits du panier via un map et introduction de dataset dans le code
   zonePanier.innerHTML += indexé.map((choix) => 
   `<article class="cart__item" data-id="${choix._id}" data-couleur="${choix.couleur}" data-quantité="${choix.quantité}"> 
     <div class="cart__item__img">
@@ -83,7 +83,7 @@ function affiche(indexé) {
     </div>
   </article>`
     ).join(""); //on remplace les virgules de jonctions des objets du tableau par un vide
-  // reste à l'écoute des modifications de quantité pour l'affichage et actualiser les données
+  // modifications de quantité pour l'affichage et actualiser les données
   totalProduit();
 }
 //--------------------------------------------------------------
@@ -93,7 +93,7 @@ function modifQuantité() {
   const cart = document.querySelectorAll(".cart__item");
   /* manière de regarder ce que l'on a d'affiché dynamiquement grace au dataset
    cart.forEach((cart) => {console.log("item panier en dataset: " + " " + cart.dataset.id + " " + cart.dataset.couleur + " " + cart.dataset.quantité); }); */
-  // On écoute ce qu'il se passe dans itemQuantity de l'article concerné
+  // itemQuantity de l'article concerné
   cart.forEach((cart) => {
     cart.addEventListener("change", (eq) => {
       // vérification d'information de la valeur du clic et son positionnement dans les articles
@@ -106,7 +106,7 @@ function modifQuantité() {
         ) {
           article.quantité = eq.target.value;
           localStorage.panierStocké = JSON.stringify(panier);
-          // on joue la fonction pour actualiser les données
+          // fonction pour actualiser les données
           totalProduit();
         }
     });
@@ -120,7 +120,7 @@ function suppression() {
   const cartdelete = document.querySelectorAll(".cart__item .deleteItem");
   // pour chaque élément cartdelete
   cartdelete.forEach((cartdelete) => {
-    // On écoute s'il y a un clic dans l'article concerné
+    // s'il y a un clic dans l'article concerné
     cartdelete.addEventListener("click", () => {
       // appel de la ressource du local storage
       let panier = JSON.parse(localStorage.getItem("panierStocké"));
@@ -137,13 +137,13 @@ function suppression() {
           nouveauPanier.splice(num, 1);
           //affichage informatif
           if (nouveauPanier && nouveauPanier.length == 0) {
-            // si il n'y a pas de panier on créait un H1 informatif et quantité appropriées
+            // si il n'y a pas de panier on crée un H1 informatif et quantité appropriées
             document.querySelector("#totalQuantity").innerHTML = "0";
             document.querySelector("#totalPrice").innerHTML = "0";
             document.querySelector("h1").innerHTML =
               "Vous n'avez pas d'article dans votre panier";
           }
-          // on renvoit le nouveau panier converti dans le local storage et on joue la fonction
+          // on renvoit le nouveau panier converti dans le local storage et on applique la fonction
           localStorage.panierStocké = JSON.stringify(nouveauPanier);
           totalProduit(); // logique mais pas obligatoire à cause du reload plus bas qui raffraichit l'affichage; serait necessaire avec suppression sans reload
           // on recharge la page qui s'affiche sans le produit grace au nouveau panier
@@ -169,9 +169,9 @@ function totalProduit() {
     prixCombiné = JSON.parse(article.quantité) * JSON.parse(article.prix);
     totalPrix += prixCombiné;
   }
-  // je pointe l'endroit d'affichage nombre d'article
+  // j'applique l'endroit d'affichage nombre d'article
   document.getElementById("totalQuantity").textContent = totalArticle;
-  // je pointe l'endroit d'affichage du prix total
+  // j'applique l'endroit d'affichage du prix total
   document.getElementById("totalPrice").textContent = totalPrix;
 }
 //--------------------------------------------------------------
@@ -186,21 +186,21 @@ if (page.match("cart")) {
   /* équivalent en javascript à  	
   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/ */
   // équivalent pour w3c /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
-  // on pointe des éléments input, on attribut à certains la même classe, ils régiront pareil aux différantes regex
-  // on pointe les input nom prénom et ville
+  // on applique des éléments input, on attribut à certains la même classe, ils régiront pareil aux différantes regex
+  // on applique les input nom prénom et ville
   var prenom = document.querySelector("#firstName");
   prenom.classList.add("regex_texte");
   var nom = document.querySelector("#lastName");
   nom.classList.add("regex_texte");
   var ville = document.querySelector("#city");
   ville.classList.add("regex_texte");
-  // on pointe l'input adresse
+  // on applique l'input adresse
   var adresse = document.querySelector("#address");
   adresse.classList.add("regex_adresse");
-  // on pointe l'input email
+  // on applique l'input email
   var email = document.querySelector("#email");
   email.classList.add("regex_email");
-  // on pointe les élément qui ont la classe .regex_texte
+  // on applique les élément qui ont la classe .regex_texte
   var regexTexte = document.querySelectorAll(".regex_texte");
   // modification du type de l'input type email à text à cause d'un comportement de l'espace blanc non voulu vis à vis de la regex 
   document.querySelector("#email").setAttribute("type", "text");
@@ -405,7 +405,7 @@ if (page.match("cart")) {
 //----------------------------------------------------------------
 // fonction récupérations des id puis mis dans un tableau
 //----------------------------------------------------------------
-// définition du panier quine comportera que les id des produits choisi du local storage
+// définition du panier qui ne comportera que les id des produits choisi du local storage
 let panierId = [];
 function tableauId() {
 // appel des ressources
@@ -462,7 +462,7 @@ function envoiPaquet() {
       .then((res) => res.json())
       .then((data) => {
         // envoyé à la page confirmation, autre écriture de la valeur "./confirmation.html?commande=${data.orderId}"
-        window.location.href = `/front/html/confirmation.html?commande=${data.orderId}`;
+        window.location.href = `../html/confirmation.html?commande=${data.orderId}`;
       })
       .catch(function (err) {
         console.log(err);
